@@ -10,14 +10,24 @@ class CalculationsController < ApplicationController
     # The special word the user input is in the string @special_word.
     # ================================================================================
 
+    @text_array = @text.downcase.gsub(/[^a-z0-9\s]/i, "").split
 
-    @word_count = "Replace this string with your answer."
+    @word_count = @text_array.count
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    @text_no_spaces = @text.gsub(" ","")
 
-    @occurrences = "Replace this string with your answer."
+    @character_count_without_spaces = @text_no_spaces.length
+
+    @occurrences = 0
+
+    @text_array.each do |word|
+      if word == @special_word.downcase
+        @occurrences = @occurrences + 1
+      end
+    end
+
 
     # ================================================================================
     # Your code goes above.
@@ -38,7 +48,14 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+    @r = @apr / 12 / 100 # monthly percentage rate = APR divided by 12 (converted to percentage)
+    @n = @years * 12 # number of monthly payments = years times 12
+
+    if @r == 0
+      @monthly_payment = @principal
+    else
+      @monthly_payment = (@r*@principal*(1+@r)**@n)/((1+@r)**@n - 1)
+    end
 
     # ================================================================================
     # Your code goes above.
@@ -60,12 +77,12 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = @ending - @starting
+    @minutes = @seconds / 60.0
+    @hours = @seconds / 3600.0
+    @days = @seconds / 86400.0
+    @weeks = @seconds / 604800.0
+    @years = @seconds / 31536000.0
 
     # ================================================================================
     # Your code goes above.
@@ -82,21 +99,33 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @sorted_numbers[0]
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @sorted_numbers.reverse[0]
 
-    @range = "Replace this string with your answer."
+    @range = @maximum - @minimum
 
-    @median = "Replace this string with your answer."
+    @length = @numbers.length
 
-    @sum = "Replace this string with your answer."
+    if @length.odd? == 1
+      @median_position = (@length - 1)/2
+      @median = @sorted_numbers[@median_position]
+    else
+      @median_right = @length / 2
+      @median_left = @median_right - 1
+      @median = (@sorted_numbers[@median_left] + @sorted_numbers[@median_right])/2
+    end
 
-    @mean = "Replace this string with your answer."
+    @sum = 0
+    @numbers.each do |num|
+      @sum = @sum + num
+    end
+
+    @mean = @sum / @count
 
     @variance = "Replace this string with your answer."
 
