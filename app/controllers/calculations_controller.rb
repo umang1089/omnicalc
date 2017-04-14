@@ -111,7 +111,7 @@ class CalculationsController < ApplicationController
 
     @length = @numbers.length
 
-    if @length.odd? == 1
+    if @length.odd?
       @median_position = (@length - 1)/2
       @median = @sorted_numbers[@median_position]
     else
@@ -127,9 +127,16 @@ class CalculationsController < ApplicationController
 
     @mean = @sum / @count
 
-    @variance = "Replace this string with your answer."
+    @sum_of_squares = 0
 
-    @standard_deviation = "Replace this string with your answer."
+    @numbers.each do |num|
+      square = num ** 2
+      @sum_of_squares = @sum_of_squares + square
+    end
+
+    @variance = (@sum_of_squares / @length) - @mean**2
+
+    @standard_deviation = @variance ** 0.5
 
     @mode = "Replace this string with your answer."
 
