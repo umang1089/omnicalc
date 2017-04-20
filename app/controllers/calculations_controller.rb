@@ -138,7 +138,13 @@ class CalculationsController < ApplicationController
 
     @standard_deviation = @variance ** 0.5
 
-    @mode = "Replace this string with your answer."
+     @counts = Hash.new(0)
+
+    @numbers.each do |num|
+       @counts[num] += 1
+    end
+
+    @mode = @counts.key(@counts.values.max)
 
     # ================================================================================
     # Your code goes above.
